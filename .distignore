@@ -1,0 +1,14 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+/src
+/webpack
+.distignore
+.editorconfig
+package-lock.json
+package.json
+postcss.config.js
+webpack.config.js
+readme.md
+README.md
