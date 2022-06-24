@@ -1,5 +1,5 @@
 <?php
-	
+
 /**
  * alm_acf_loop_repeater_rows
  * Access ACF fields for Repeater and Flexible Content field types.
@@ -11,27 +11,30 @@
  * @param {*} $options
  * @since 1.3.0
  */
-function alm_acf_loop_repeater_rows($type = 'query', $parent_field_name = '', $field_name, $id, $options = ''){      	
-	
+function alm_acf_loop_repeater_rows($type = 'query', $parent_field_name = '', $field_name, $id, $options = ''){
+
 	if(!$field_name || !$id){
    	return ''; // Exit if empty
 	}
-	
+
 	$content = '';
-	
-	if(empty($parent_field_name)){	     
-   	// Standard Field 	
-		$total = count(get_field($field_name, $id));
+
+	if(empty($parent_field_name)){
+   	// Standard Field
+
+
+		$total = count( get_field( $field_name, $id ) );
+
 		if($type === 'query'){
-   		$content = alm_acf_get_repeater_fields($field_name, $id, $options, $total);	
+   		$content = alm_acf_get_repeater_fields($field_name, $id, $options, $total);
    	}
-   	
+
    } else {
-		
+
 		// Sub Fields
 		$parent = explode(':', $parent_field_name); // Split into array
 		$parent_count = count($parent);
-	
+
 		// Loop sub fields to get at the field
 		if($parent_count == 1){
 			while (have_rows($parent[0], $id)) : the_row();
@@ -63,16 +66,16 @@ function alm_acf_loop_repeater_rows($type = 'query', $parent_field_name = '', $f
             endwhile;
          endwhile;
       }
-   }      	
-	
+   }
+
 	// If count, return the count
    $content = ($type === 'count') ? $total : $content;
-   
-	return $content;	        
+
+	return $content;
 }
 
 
-	
+
 /**
  * alm_acf_get_repeater_fields
  * Get the fields for Repeater and Flexible Content fields
@@ -82,23 +85,23 @@ function alm_acf_loop_repeater_rows($type = 'query', $parent_field_name = '', $f
  * @param {*} $options
  * @param {*} total
  * @since 1.3.0
- */	
+ */
 
 function alm_acf_get_repeater_fields($field_name, $id, $options, $total = 0){
-   	
+
 	if(!$field_name || !$id){
    	return ''; // Exit if empty
 	}
-	
+
 	$content = '';
 	$data = '';
 	$total = $total;
 	$postcount = 0;
-	
-	
-	// Preloaded 
+
+
+	// Preloaded
 	if($options['preloaded']){
-	
+
    	if(have_rows($field_name, $id)){
 
 			$row_count = 0;
@@ -106,16 +109,16 @@ function alm_acf_get_repeater_fields($field_name, $id, $options, $total = 0){
 			ob_start();
 
 			while (have_rows($field_name, $id)) : the_row();
-			
+
 				// Start displaying rows after the offset
 				if ($row_count >= $options['offset']){
 
 					// Exit when rows exceeds max pages
 					if ($row_count >= $options['max_pages']) {
 						break; // exit early
-					}					
-					
-					// Set ALM Variables		
+					}
+
+					// Set ALM Variables
 					$alm_found_posts = $total;
 					$alm_page = 1;
 					$alm_item = $row_count;
@@ -129,23 +132,23 @@ function alm_acf_get_repeater_fields($field_name, $id, $options, $total = 0){
 						// Repeater
 						$type = alm_get_repeater_type($options['repeater']);
 						include(alm_get_current_repeater($options['repeater'], $type));
-					}				
+					}
 				}
-				
+
 				$row_count++;
 
 			endwhile;
 
-			$content = ob_get_clean();	
-							
-		}				
-	} 			
-	
-	// Standard			
+			$content = ob_get_clean();
+
+		}
+	}
+
+	// Standard
 	else {
-		
+
 		if(have_rows($field_name, $id)){
-		
+
 			$per_page = ($options['posts_per_page'] * $options['page']) + 1;
 			$start = ($options['posts_per_page'] * $options['page']) + $options['offset'];
 			$end = $start + $options['posts_per_page'];
@@ -187,20 +190,20 @@ function alm_acf_get_repeater_fields($field_name, $id, $options, $total = 0){
 			endwhile;
 
 			$acf_data = ob_get_clean();
-		
+
 		}
-		
+
 		// Return $data
 		$content = array(
 			'content' => $acf_data,
 			'postcount' => $row_counter,
 			'totalposts' => $total
 		);
-		
+
 	}
-	
+
 	return $content;
-	   	
+
 }
 
 
@@ -216,26 +219,26 @@ function alm_acf_get_repeater_fields($field_name, $id, $options, $total = 0){
  * @since 1.3.0
  * @return $content
  */
-function alm_acf_loop_gallery_rows($type = 'query', $parent_field_name = '', $field_name, $id){      	
-	
+function alm_acf_loop_gallery_rows($type = 'query', $parent_field_name = '', $field_name, $id){
+
 	if(!$field_name || !$id){
    	return ''; // Exit if empty
 	}
-	
-	$content = '';      
-	
+
+	$content = '';
+
 	if(empty($parent_field_name)){
 		// Standard Field
 		while ( have_rows( $field_name, $id ) ) : the_row();
          $content = get_field($field_name, $id);
       endwhile;
-      
+
 	} else {
-		
+
 		// Sub Fields
 		$parent = explode(':', $parent_field_name); // Split into array
 		$parent_count = count($parent);
-	
+
 		// Loop sub fields to get at the field
 		if($parent_count == 1){
          while ( have_rows( $parent[0], $id ) ) : the_row();
@@ -259,12 +262,12 @@ function alm_acf_loop_gallery_rows($type = 'query', $parent_field_name = '', $fi
          endwhile;
       }
    }
-   
+
    // If count, return the count
    $content = ($type === 'count') ? count($content) : $content;
-   
-   return $content;     
-   
+
+   return $content;
+
 }
 
 
@@ -279,14 +282,14 @@ function alm_acf_loop_gallery_rows($type = 'query', $parent_field_name = '', $fi
  * @since 1.3.0
  * @return $content
  */
-function alm_acf_loop_relationship_rows($parent_field_name = '', $field_name, $id){      	
-	
+function alm_acf_loop_relationship_rows($parent_field_name = '', $field_name, $id){
+
 	if(!$field_name || !$id){
    	return ''; // Exit if empty
 	}
-	
-	$content = '';  
-		
+
+	$content = '';
+
 	// Sub Fields
 	$parent = explode(':', $parent_field_name); // Split into array
 	$parent_count = count($parent);
@@ -313,7 +316,7 @@ function alm_acf_loop_relationship_rows($parent_field_name = '', $field_name, $i
          endwhile;
       endwhile;
    }
-   
-   return $content;     
-   
+
+   return $content;
+
 }

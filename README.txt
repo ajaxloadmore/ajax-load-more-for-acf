@@ -7,7 +7,7 @@ Plugin URI: https://connekthq.com/ajax-load-more/extensions/advanced-custom-fiel
 Donate link: https://connekthq.com/donate/
 Tags: ajax load more, advanced custom fields, custom fields, repeater field, flexible content, gallery, repeater, relationship
 Requires at least: 4.0
-Tested up to: 5.2.4
+Tested up to: 6.0
 Stable tag: 1.3.0.1
 License: GPLv2 or later
 License URI: http://gnu.org/licenses/gpl-2.0.html
