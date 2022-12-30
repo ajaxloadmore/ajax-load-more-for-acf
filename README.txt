@@ -7,8 +7,8 @@ Plugin URI: https://connekthq.com/ajax-load-more/extensions/advanced-custom-fiel
 Donate link: https://connekthq.com/donate/
 Tags: ajax load more, advanced custom fields, custom fields, repeater field, flexible content, gallery, repeater, relationship
 Requires at least: 4.0
-Tested up to: 6.0
-Stable tag: 1.3.0.1
+Tested up to: 6.1
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,12 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 
 
 == Changelog ==
+
+= 1.3.1 - December 30, 2022 =
+* FIX: Fixed issue with undefined `$page` variable when using Repeater field.
+* FIX: Fixed issue with `$alm_item` variable being off in preloaded queries.
+* UPDATE: Code cleanup and organization.
+
 
 = 1.3.0.1 - March 6, 2020 =
 * FIX - Fix for issue with Relationship field type show PHP warning message about undefined variable.
