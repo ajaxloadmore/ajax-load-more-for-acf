@@ -22,9 +22,7 @@ define( 'ALM_ACF_PATH', plugin_dir_path( __FILE__ ) );
 define( 'ALM_ACF_URL', plugins_url( '', __FILE__ ) );
 
 /**
- *  Install the add-on.
- *
- *  @since 1.0
+ *  Installation hook.
  */
 function alm_acf_install() {
 	if ( ! is_plugin_active( 'ajax-load-more/ajax-load-more.php' ) ) {
@@ -35,8 +33,6 @@ register_activation_hook( __FILE__, 'alm_acf_install' );
 
 /**
  * Display admin notice if plugin does not meet the requirements.
- *
- * @since 2.5.6
  */
 function alm_acf_admin_notice() {
 	$slug   = 'ajax-load-more';
