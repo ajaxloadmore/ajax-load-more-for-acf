@@ -230,7 +230,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 			 * Cache Add-on.
 			 * Check for cached data before running WP_Query.
 			 */
-			if ( $cache_id && method_exists( 'ALMCache', 'get_cache_file' ) && $query_type !== 'totalposts' ) {
+			if ( $cache_id && method_exists( 'ALMCache', 'get_cache_file' ) ) {
 				$cache_data = ALMCache::get_cache_file( $cache_id, $md5_hash );
 				if ( $cache_data ) {
 					wp_send_json( $cache_data );
