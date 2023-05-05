@@ -7,7 +7,7 @@
  * Author: Darren Cooney
  * Twitter: @KaptonKaos
  * Author URI: https://connekthq.com
- * Version: 1.3.1
+ * Version: 1.3.2
  * License: GPL
  * Copyright: Darren Cooney & Connekt Media
  *
@@ -144,7 +144,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 			$max_pages      = $posts_per_page + $offset;
 
 			// Check for empty ACF post ID.
-			$post_id = ( empty( $acf_post_id ) ) ? $args['post_id'] : $acf_post_id;
+			$post_id = empty( $acf_post_id ) ? $args['post_id'] : $acf_post_id;
 
 			// Repeater OR Flexible Content.
 			if ( $field_type === 'repeater' || $field_type === 'flexible' ) {
@@ -162,8 +162,8 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 
 			// Gallery.
 			if ( $field_type === 'gallery' ) {
-				// Get Images.
 				$images = alm_acf_loop_gallery_rows( 'query', $parent_field_name, $field_name, $post_id );
+
 				if ( $images ) {
 					$total     = count( $images );
 					$max_pages = $posts_per_page + $offset;
@@ -221,11 +221,25 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 			$canonical_url  = isset( $form_data['canonical_url'] ) ? $form_data['canonical_url'] : $_SERVER['HTTP_REFERER'];
 
 			// Cache Add-on.
-			$cache_id = isset( $form_data['cache_id'] ) ? $form_data['cache_id'] : '';
+			$cache_id        = isset( $form_data['cache_id'] ) ? $form_data['cache_id'] : '';
+			$cache_logged_in = isset( $form_data['cache_logged_in'] ) ? $form_data['cache_logged_in'] : false;
+			$do_create_cache = $cache_logged_in === 'true' && is_user_logged_in() ? false : true;
+			$md5_hash        = $cache_id ? md5( wp_json_encode( $form_data ) ) : '';
+
+			/**
+			 * Cache Add-on.
+			 * Check for cached data before running WP_Query.
+			 */
+			if ( $cache_id && method_exists( 'ALMCache', 'get_cache_file' ) && $query_type !== 'totalposts' ) {
+				$cache_data = ALMCache::get_cache_file( $cache_id, $md5_hash );
+				if ( $cache_data ) {
+					wp_send_json( $cache_data );
+				}
+			}
 
 			// Preload Add-on.
 			$preloaded        = isset( $form_data['preloaded'] ) ? $form_data['preloaded'] : false;
-			$preloaded_amount = isset( $form_data['preloaded_amount'] ) ? $form_data['preloaded_amount'] : '5';
+			$preloaded_amount = isset( $form_data['preloaded_amount'] ) ? (int) $form_data['preloaded_amount'] : 5;
 			if ( has_action( 'alm_preload_installed' ) && $preloaded === 'true' ) {
 				// If preload - offset the posts_per_page + preload_amount.
 				$old_offset = $preloaded_amount;
@@ -233,19 +247,9 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 			}
 
 			// SEO Add-on.
-			$seo_start_page = ( isset( $form_data['seo_start_page'] ) ) ? $form_data['seo_start_page'] : 1;
+			$seo_start_page = isset( $form_data['seo_start_page'] ) ? $form_data['seo_start_page'] : 1;
 
-			/**
-			 * Cache Add-on hook.
-			 * Create cache directory + meta .txt file
-			 *
-			 * @return void
-			 */
-			if ( ! empty( $cache_id ) && has_action( 'alm_cache_create_dir' ) ) {
-				apply_filters( 'alm_cache_create_dir', $cache_id, $canonical_url );
-				$page_cache = ''; // Set our page cache variable.
-			}
-
+			// Default variables.
 			$postcount  = 0;
 			$totalposts = 0;
 
@@ -282,16 +286,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 						$acf_data  = $data && $data['content'] ? $data['content'] : '';
 						$postcount = $data && $data['postcount'] ? $data['postcount'] : '';
 						$total     = $data && $data['totalposts'] ? $data['totalposts'] : '';
-
-						/**
-						 * Cache Add-on hook.
-						 * If Cache is enabled, check the cache file
-						 *
-						 * @return void
-						 */
-						if ( ! empty( $cache_id ) && has_action( 'alm_cache_installed' ) && ! empty( $acf_data ) ) {
-							apply_filters( 'alm_cache_file', $cache_id, $page, $seo_start_page, $acf_data, $preloaded );
-						}
 					}
 
 					// Gallery.
@@ -335,18 +329,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 
 							endforeach;
 							$acf_data = ob_get_clean();
-
-							/*
-							*   alm_cache_file
-							*
-							* Cache Add-on hook
-							* If Cache is enabled, check the cache file
-							*
-							* @return null
-							*/
-							if ( ! empty( $cache_id ) && has_action( 'alm_cache_installed' ) && ! empty( $acf_data ) ) {
-								apply_filters( 'alm_cache_file', $cache_id, $page, $seo_start_page, $acf_data, $preloaded );
-							}
 						}
 					}
 
@@ -358,6 +340,14 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 								'totalposts' => $total,
 							],
 						];
+
+						/**
+						 * Cache Add-on.
+						 * Create the cache file.
+						 */
+						if ( $cache_id && method_exists( 'ALMCache', 'create_cache_file' ) && $do_create_cache ) {
+							ALMCache::create_cache_file( $cache_id, $md5_hash, $canonical_url, $acf_data, $postcount, $total );
+						}
 					} else {
 						$return = [
 							'html' => '',
@@ -368,12 +358,9 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 						];
 
 					}
-
 					wp_send_json( $return );
-
 				}
 			}
-
 			wp_die();
 		}
 
@@ -390,25 +377,24 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * @since 1.0
 		 */
 		public function alm_acf_shortcode( $acf, $acf_field_type, $acf_field_name, $acf_post_id, $post_id, $acf_parent_field_name ) {
-			$return  = ' data-acf="' . $acf . '"';
-			$return .= ' data-acf-field-type="' . $acf_field_type . '"';
-			$return .= ' data-acf-field-name="' . $acf_field_name . '"';
+			$data  = ' data-acf="' . $acf . '"';
+			$data .= ' data-acf-field-type="' . $acf_field_type . '"';
+			$data .= ' data-acf-field-name="' . $acf_field_name . '"';
 			if ( $acf_parent_field_name ) {
-				$return .= ' data-acf-parent-field-name="' . $acf_parent_field_name . '"';
+				$data .= ' data-acf-parent-field-name="' . $acf_parent_field_name . '"';
 			}
 			if ( empty( $acf_post_id ) ) {
 				$acf_post_id = $post_id;
 			}
-			$return .= ' data-acf-post-id="' . $acf_post_id . '"';
-
-			return $return;
+			$data .= ' data-acf-post-id="' . $acf_post_id . '"';
+			return $data;
 		}
 	}
 
 	/**
-	 *  The main function responsible for returning the one true ALM_ACF Instance.
+	 * The main function responsible for returning the one true ALM_ACF Instance.
 	 *
-	 *  @since 1.0
+	 * @since 1.0
 	 */
 	function alm_acf() {
 		global $alm_acf;

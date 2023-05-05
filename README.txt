@@ -8,7 +8,7 @@ Donate link: https://connekthq.com/donate/
 Tags: ajax load more, advanced custom fields, custom fields, repeater field, flexible content, gallery, repeater, relationship
 Requires at least: 4.0
 Tested up to: 6.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,10 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 
 
 == Changelog ==
+
+= 1.3.2 - May 5, 2023 = 
+* UPDATE: Updated support for changes in Cache Add-on 2.0 and Ajax Load More 6.0.
+
 
 = 1.3.1 - December 30, 2022 =
 * FIX: Fixed issue with undefined `$page` variable when using Repeater field.
