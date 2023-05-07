@@ -222,16 +222,16 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 
 			// Cache Add-on.
 			$cache_id        = isset( $form_data['cache_id'] ) ? $form_data['cache_id'] : '';
+			$cache_slug      = isset( $form_data['cache_slug'] ) && $form_data['cache_slug'] ? $form_data['cache_slug'] : '';
 			$cache_logged_in = isset( $form_data['cache_logged_in'] ) ? $form_data['cache_logged_in'] : false;
 			$do_create_cache = $cache_logged_in === 'true' && is_user_logged_in() ? false : true;
-			$md5_hash        = $cache_id ? md5( wp_json_encode( $form_data ) ) : '';
 
 			/**
 			 * Cache Add-on.
 			 * Check for cached data before running WP_Query.
 			 */
 			if ( $cache_id && method_exists( 'ALMCache', 'get_cache_file' ) ) {
-				$cache_data = ALMCache::get_cache_file( $cache_id, $md5_hash );
+				$cache_data = ALMCache::get_cache_file( $cache_id, $cache_slug );
 				if ( $cache_data ) {
 					wp_send_json( $cache_data );
 				}
@@ -346,7 +346,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 						 * Create the cache file.
 						 */
 						if ( $cache_id && method_exists( 'ALMCache', 'create_cache_file' ) && $do_create_cache ) {
-							ALMCache::create_cache_file( $cache_id, $md5_hash, $canonical_url, $acf_data, $postcount, $total );
+							ALMCache::create_cache_file( $cache_id, $cache_slug, $canonical_url, $acf_data, $postcount, $total );
 						}
 					} else {
 						$return = [
