@@ -226,17 +226,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 			$cache_logged_in = isset( $form_data['cache_logged_in'] ) ? $form_data['cache_logged_in'] : false;
 			$do_create_cache = $cache_logged_in === 'true' && is_user_logged_in() ? false : true;
 
-			/**
-			 * Cache Add-on.
-			 * Check for cached data before running WP_Query.
-			 */
-			if ( $cache_id && method_exists( 'ALMCache', 'get_cache_file' ) ) {
-				$cache_data = ALMCache::get_cache_file( $cache_id, $cache_slug );
-				if ( $cache_data ) {
-					wp_send_json( $cache_data );
-				}
-			}
-
 			// Preload Add-on.
 			$preloaded        = isset( $form_data['preloaded'] ) ? $form_data['preloaded'] : false;
 			$preloaded_amount = isset( $form_data['preloaded_amount'] ) ? (int) $form_data['preloaded_amount'] : 5;
