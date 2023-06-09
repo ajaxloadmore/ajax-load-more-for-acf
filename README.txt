@@ -42,11 +42,12 @@ The following Ajax Load More shortcode parameters are available when the Advance
 *   **acf_post_id** - The ID of the current page/post. Default = $post->ID
 *   **acf_field_type** - The type of ACF field. (gallery/flexible/relationship/repeater)
 *   **acf_field_name** - The name of the ACF field.
+*   **acf_parent_field_name** - Access sub field data up to the three levels deep.
+*   **acf_row_index** - Access sub field data in a Repeater or Flexible Content field by row index.
 
 = Example Shortcode =
 
-    [ajax_load_more repeater="default" acf="true" acf_field_type="repeater" acf_field_name="{your_custom_field_name}"]
-
+    [ajax_load_more repeater="default" acf="true" acf_field_type="repeater" acf_field_name="{your_field_name}"]
 
 == Frequently Asked Questions ==
 
@@ -75,7 +76,6 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 == Screenshots ==
 
 
-
 == Installation ==
 
 = Uploading in WordPress Dashboard =
@@ -92,11 +92,12 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 4. Ensure Ajax Load More is installed prior to activating the plugin.
 5. Activate the plugin in the WP plugin dashboard.
 
-
 == Changelog ==
 
-= 1.3.2 - May 5, 2023 = 
+= 1.3.2 - June 11, 2023 = 
+* NEW: Added support for accessing sub field data in Repeater or Flexible Content field types by row index.
 * UPDATE: Updated to add compatibility with Cache Add-on 2.0 and Ajax Load More 6.0.
+* FIX: Fixed issue with broken Paging add-on and ACF extension.
 
 
 = 1.3.1 - December 30, 2022 =
