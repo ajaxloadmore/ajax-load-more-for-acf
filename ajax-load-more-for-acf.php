@@ -14,13 +14,6 @@
  * @package ALM_ACF
  */
 
-/*
- TODO:
-	- Add acf_row_index shortcode parameter.
-	- Add some documentation.
-	- Remove hard coded $row_index = 2;
-*/
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
