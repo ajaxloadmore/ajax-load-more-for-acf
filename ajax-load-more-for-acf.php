@@ -4,12 +4,11 @@
  * Plugin URI: http://connekthq.com/plugins/ajax-load-more/extensions/advanced-custom-fields/
  * Description: An Ajax Load More extension that adds compatibility for ACF field types.
  * Text Domain: ajax-load-more-for-acf
- * Author: Darren Cooney
- * Twitter: @KaptonKaos
+ * Author: Erick Danzer
  * Author URI: https://connekthq.com
- * Version: 1.3.2
+ * Version: 1.3.3
  * License: GPL
- * Copyright: Darren Cooney & Connekt Media
+ * Copyright: Erick Danzer & AjaxWP LLC
  *
  * @package ALM_ACF
  */
