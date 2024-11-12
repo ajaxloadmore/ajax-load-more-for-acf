@@ -1,14 +1,14 @@
 === Ajax Load More for Advanced Custom Fields ===
 
-Contributors: dcooney, connekthq
-Author: Darren Cooney
+Contributors: edanzer, dcooney
+Author: Erick Danzer
 Author URI: https://connekthq.com/
 Plugin URI: https://connekthq.com/ajax-load-more/extensions/advanced-custom-fields/
 Donate link: https://connekthq.com/donate/
-Tags: ajax load more, advanced custom fields, custom fields, repeater field, flexible content, gallery, repeater, relationship
+Tags: ajax load more, advanced custom fields, custom fields, acf, infinite scroll
 Requires at least: 4.0
-Tested up to: 6.2
-Stable tag: 1.3.2
+Tested up to: 6.7
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,10 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 5. Activate the plugin in the WP plugin dashboard.
 
 == Changelog ==
+
+= 1.3.3 - November 11, 2024 = 
+* UPDATE: Readme, contributors, WordPress tested version
+* NOTE: Plugin has new ownership
 
 = 1.3.2 - June 11, 2023 = 
 * NEW: Added support for accessing sub field data in Repeater or Flexible Content field types by row index.
