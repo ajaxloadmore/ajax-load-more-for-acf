@@ -215,12 +215,17 @@ function alm_acf_loop_gallery_rows( $type = 'query', $parent_field_name = '', $f
 
 	// Set initial variables.
 	$content = '';
+	
+	$test = alm_acf_get_blocks_from_page( 'acf/example', $field_name, 7987 );
+	//$meow = acf_get_attachment(7956); 
+	print_r($test);
 
 	if ( empty( $parent_field_name ) ) {
 		// Standard Field.
 		while ( have_rows( $field_name, $id ) ) :
 			the_row();
 			$content = get_field( $field_name, $id );
+			//alm_print($content);
 		endwhile;
 	} elseif ( $parent_field_name && $row_index > 0 ) {
 		// Row index: Access sub fields by row index.

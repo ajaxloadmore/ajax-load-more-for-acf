@@ -7,12 +7,21 @@
  * Author: Darren Cooney
  * Twitter: @KaptonKaos
  * Author URI: https://connekthq.com
- * Version: 1.3.2
+ * Version: 1.3.3
  * License: GPL
  * Copyright: Darren Cooney & Connekt Media
  *
  * @package ALM_ACF
  */
+
+/*
+Create new PRO add-on for ACF.
+- Support fields
+- Support blocks.
+- Block data is returned differently.
+
+- Started work on ACF block data.
+*/
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -62,12 +71,12 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * Set up contructors.
 		 */
 		public function __construct() {
-			add_action( 'alm_acf_installed', [ &$this, 'alm_acf_installed' ] );
-			add_filter( 'alm_acf_shortcode', [ &$this, 'alm_acf_shortcode' ], 10, 7 );
-			add_filter( 'alm_acf_preloaded', [ &$this, 'alm_acf_preloaded_query' ], 10, 3 );
-			add_action( 'wp_ajax_alm_acf', [ &$this, 'alm_acf_query' ] );
-			add_action( 'wp_ajax_nopriv_alm_acf', [ &$this, 'alm_acf_query' ] );
-			add_filter( 'alm_acf_total_rows', [ &$this, 'alm_acf_total_rows' ], 10, 1 );
+			add_action( 'alm_acf_installed', [ $this, 'alm_acf_installed' ] );
+			add_filter( 'alm_acf_shortcode', [ $this, 'alm_acf_shortcode' ], 10, 7 );
+			add_filter( 'alm_acf_preloaded', [ $this, 'alm_acf_preloaded_query' ], 10, 3 );
+			add_action( 'wp_ajax_alm_acf', [ $this, 'alm_acf_query' ] );
+			add_action( 'wp_ajax_nopriv_alm_acf', [ $this, 'alm_acf_query' ] );
+			add_filter( 'alm_acf_total_rows', [ $this, 'alm_acf_total_rows' ], 10, 1 );
 			$this->alm_acf_includes();
 		}
 
@@ -77,7 +86,8 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * @since 1.3.0
 		 */
 		public function alm_acf_includes() {
-			include_once ALM_ACF_PATH . 'functions.php';
+			require_once ALM_ACF_PATH . 'functions.php';
+			require_once ALM_ACF_PATH . 'blocks.php';
 		}
 
 		/**
@@ -210,7 +220,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * @since 1.0
 		 */
 		public function alm_acf_query() {
-			$form_data      = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+			$form_data      = filter_input_array( INPUT_GET );
 			$data           = isset( $form_data['acf'] ) ? $form_data['acf'] : ''; // Get $acf object array.
 			$repeater       = isset( $form_data['repeater'] ) ? $form_data['repeater'] : 'default';
 			$type           = alm_get_repeater_type( $repeater );
@@ -418,6 +428,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		}
 		return $alm_acf;
 	}
-		alm_acf();
+	alm_acf();
 
 endif;
