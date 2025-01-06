@@ -4,14 +4,14 @@
  * Plugin URI: http://connekthq.com/plugins/ajax-load-more/extensions/advanced-custom-fields/
  * Description: An Ajax Load More extension that adds compatibility for ACF field types.
  * Text Domain: ajax-load-more-for-acf
- * Author: Erick Danzer
+ * Author: Darren Cooney
  * Author URI: https://connekthq.com
  * Version: 1.3.3
  * License: GPL
- * Copyright: Erick Danzer & AjaxWP LLC
+ * Copyright: Connekt Media & Darren Cooney
  *
  * @package ALM_ACF
- */
+ */ 
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -209,7 +209,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * @since 1.0
 		 */
 		public function alm_acf_query() {
-			$form_data      = filter_input_array( INPUT_GET, FILTER_SANITIZE_STRING );
+			$form_data      = filter_input_array( INPUT_GET );
 			$data           = isset( $form_data['acf'] ) ? $form_data['acf'] : ''; // Get $acf object array.
 			$repeater       = isset( $form_data['repeater'] ) ? $form_data['repeater'] : 'default';
 			$type           = alm_get_repeater_type( $repeater );

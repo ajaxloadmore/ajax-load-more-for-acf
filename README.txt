@@ -1,7 +1,7 @@
 === Ajax Load More for Advanced Custom Fields ===
 
-Contributors: edanzer, dcooney
-Author: Erick Danzer
+Contributors: dcooney
+Author: Darren Cooney
 Author URI: https://connekthq.com/
 Plugin URI: https://connekthq.com/ajax-load-more/extensions/advanced-custom-fields/
 Donate link: https://connekthq.com/donate/
@@ -22,7 +22,6 @@ Easily access [Repeater](https://advancedcustomfields.com/resources/repeater/), 
 
 **[View Documentation](https://connekthq.com/plugins/ajax-load-more/extensions/advanced-custom-fields/)**
 
-
 = Supported Field Types =
 
 The following ACF [Field Types](https://www.advancedcustomfields.com/resources/#field-types) are supported:
@@ -31,8 +30,6 @@ The following ACF [Field Types](https://www.advancedcustomfields.com/resources/#
 *   **Flexible Content** - The flexible content field acts as a blank canvas to which you can add an unlimited number of layouts with full control over the order.
 *   **Relationship** - The Relationship field creates a very attractive version of the post object field. With a Relationship field, you can select from pages + posts + custom post types.
 *   **Repeater** - The repeater field allows you to create a set of sub fields which can be repeated again and again whilst editing content.
-
-
 
 = Shortcode Parameters =
 
@@ -72,9 +69,7 @@ Create an [ajax_load_more] shortcode and set `acf_field_type="gallery"`.
 = How do I infinite scroll Flexible Content fields with Ajax Load More =
 Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 
-
 == Screenshots ==
-
 
 == Installation ==
 
@@ -96,55 +91,44 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 
 = 1.3.3 - November 11, 2024 = 
 * UPDATE: Readme, contributors, WordPress tested version
-* NOTE: Plugin has new ownership
 
 = 1.3.2 - June 11, 2023 = 
 * NEW: Added support for accessing sub field data in Repeater or Flexible Content field types by row index.
 * UPDATE: Updated to add compatibility with Cache Add-on 2.0 and Ajax Load More 6.0.
 * FIX: Fixed issue with broken Paging add-on and ACF extension.
 
-
 = 1.3.1 - December 30, 2022 =
 * FIX: Fixed issue with undefined `$page` variable when using Repeater field.
 * FIX: Fixed issue with `$alm_item` variable being off in preloaded queries.
 * UPDATE: Code cleanup and organization.
 
-
 = 1.3.0.1 - March 6, 2020 =
 * FIX - Fix for issue with Relationship field type show PHP warning message about undefined variable.
-
 
 = 1.3.0 - October 22, 2019 =
 * UPGRADE NOTICE - Users updating to the latest ACF extension must also update core Ajax Load More to 5.1.6 to get sub_field support.
 * NEW - Added support for infinite scrolling nested sub fields (`acf_parent_field_name`). Up to 3 levels of nesting is supported.
 * UPDATE - Removed legacy API endpoint.
 
-
 = 1.2.0 - May 6, 2019 =
 * UPGRADE NOTICE - This update requires Ajax Load More 5.1+.
 * NEW - ACF extension now uses the WordPress REST API for Ajax queries. This change can be reverted in ALM Settings.
-
 
 = 1.1.2 - September 19, 2018 =
 * FIX - Fixed cache creation issue with Cache add-on and Repeater and Flexible Content fields.
 * FIX - Fixed issue with `offset` parameter not working in preloaded Ajax Load More query.
 * FIX - Fixed PHP warning message about undefined variable.
 
-
 = 1.1.1 - October 5, 2017 =
 * NEW - Adding new `alm_get_acf_gallery_theme_repeater` function for integration between Theme Repeaters (add-on) and the Gallery Field Type.
 
-
 = 1.1 - May 22, 2017 =
-
 * NOTICE - Requires Ajax Load More 3.0.1+
 * NEW - Added support for Gallery field type.
 * NEW - Added support for Flexible Content field type.
 
-
 = 1.0 - May 4, 2017 =
 * Initial Release.
-
 
 == Upgrade Notice ==
 * None
