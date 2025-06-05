@@ -90,7 +90,8 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 == Changelog ==
 
 = 1.3.4 - June 5, 2025 = 
-* UPDATE: Updated require plugin, readme and WP tested version.
+* NEW: Adding Ajax Load More as a required plugin.
+* UPDATE: Code cleanup, readme and WP tested version.
 
 = 1.3.3 - November 11, 2024 = 
 * UPDATE: Readme, contributors, WordPress tested version
