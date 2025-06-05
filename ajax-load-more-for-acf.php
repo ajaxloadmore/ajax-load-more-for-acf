@@ -33,12 +33,12 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * Set up contructors.
 		 */
 		public function __construct() {
-			add_action( 'alm_acf_installed', [ &$this, 'alm_acf_installed' ] );
-			add_filter( 'alm_acf_shortcode', [ &$this, 'alm_acf_shortcode' ], 10, 7 );
-			add_filter( 'alm_acf_preloaded', [ &$this, 'alm_acf_preloaded_query' ], 10, 3 );
-			add_action( 'wp_ajax_alm_acf', [ &$this, 'alm_acf_query' ] );
-			add_action( 'wp_ajax_nopriv_alm_acf', [ &$this, 'alm_acf_query' ] );
-			add_filter( 'alm_acf_total_rows', [ &$this, 'alm_acf_total_rows' ], 10, 1 );
+			add_action( 'alm_acf_installed', [ $this, 'alm_acf_installed' ] );
+			add_filter( 'alm_acf_shortcode', [ $this, 'alm_acf_shortcode' ], 10, 7 );
+			add_filter( 'alm_acf_preloaded', [ $this, 'alm_acf_preloaded_query' ], 10, 3 );
+			add_action( 'wp_ajax_alm_acf', [ $this, 'alm_acf_query' ] );
+			add_action( 'wp_ajax_nopriv_alm_acf', [ $this, 'alm_acf_query' ] );
+			add_filter( 'alm_acf_total_rows', [ $this, 'alm_acf_total_rows' ], 10, 1 );
 			$this->alm_acf_includes();
 		}
 
