@@ -7,8 +7,8 @@ Plugin URI: https://connekthq.com/ajax-load-more/extensions/advanced-custom-fiel
 Donate link: https://connekthq.com/donate/
 Tags: ajax load more, advanced custom fields, custom fields, acf, infinite scroll
 Requires at least: 4.0
-Tested up to: 6.7
-Stable tag: 1.3.3
+Tested up to: 6.8
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,9 @@ Create an [ajax_load_more] shortcode and set  `acf_field_type="flexible"`.
 5. Activate the plugin in the WP plugin dashboard.
 
 == Changelog ==
+
+= 1.3.4 - June 5, 2025 = 
+* UPDATE: Updated require plugin, readme and WP tested version.
 
 = 1.3.3 - November 11, 2024 = 
 * UPDATE: Readme, contributors, WordPress tested version

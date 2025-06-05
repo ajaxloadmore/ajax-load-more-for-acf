@@ -2,16 +2,17 @@
 /**
  * Plugin Name: Ajax Load More for ACF
  * Plugin URI: http://connekthq.com/plugins/ajax-load-more/extensions/advanced-custom-fields/
- * Description: An Ajax Load More extension that adds compatibility for ACF field types.
+ * Description: Ajax Load More extension that adds compatibility with various field types for Advanced Custom Fields.
  * Text Domain: ajax-load-more-for-acf
  * Author: Darren Cooney
  * Author URI: https://connekthq.com
- * Version: 1.3.3
+ * Version: 1.3.4
  * License: GPL
  * Copyright: Connekt Media & Darren Cooney
+ * Requires Plugins: ajax-load-more
  *
  * @package ALM_ACF
- */ 
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -177,7 +178,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 								if ( $key >= $max_pages ) {
 									break; // exit early.
 								}
-								$row_count++;
+								++$row_count;
 
 								// Set ALM Variables.
 								$alm_found_posts = $total;
@@ -300,7 +301,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 
 									// Only display rows between the values.
 									if ( $postcount < $posts_per_page && $count >= $start ) {
-										$postcount++;
+										++$postcount;
 
 										// Set ALM Variables.
 										$alm_found_posts = $total;
@@ -317,7 +318,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 										}
 									}
 
-									$count++;
+									++$count;
 
 									if ( $count >= $end ) {
 										break; // exit.
