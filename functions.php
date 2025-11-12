@@ -146,7 +146,7 @@ function alm_acf_get_repeater_fields( $field_name, $id, $options, $total = 0, $p
 					include alm_get_current_repeater( $options['repeater'], $type );
 				}
 			}
-			$row_count++;
+			++$row_count;
 		endwhile;
 		return ob_get_clean();
 	} else {
@@ -167,7 +167,7 @@ function alm_acf_get_repeater_fields( $field_name, $id, $options, $total = 0, $p
 			// Only display rows between the values.
 			if ( $row_counter < $options['posts_per_page'] && $count >= $start ) {
 				// Increase row counter.
-				$row_counter++;
+				++$row_counter;
 
 				// Set ALM Variables.
 				$alm_found_posts = $total;
@@ -181,7 +181,7 @@ function alm_acf_get_repeater_fields( $field_name, $id, $options, $total = 0, $p
 					include alm_get_current_repeater( $options['repeater'], $type );
 				}
 			}
-			$count++;
+			++$count;
 
 			if ( $count >= $end ) {
 				break; // exit loop.

@@ -6,7 +6,7 @@
  * Text Domain: ajax-load-more-for-acf
  * Author: Darren Cooney
  * Author URI: https://connekthq.com
- * Version: 1.3.4
+ * Version: 1.4.0
  * License: GPL
  * Copyright: Connekt Media & Darren Cooney
  * Requires Plugins: ajax-load-more
@@ -104,7 +104,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 */
 		public function alm_acf_preloaded_query( $args, $repeater, $theme_repeater ) {
 			$acf_data          = '';
-			$acf               = isset( $args['acf'] ) ? $args['acf'] : false; // true / false.
 			$acf_post_id       = isset( $args['acf_post_id'] ) ? $args['acf_post_id'] : ''; // Post ID.
 			$field_type        = isset( $args['acf_field_type'] ) ? $args['acf_field_type'] : 'repeater'; // ACF Field Type.
 			$field_name        = isset( $args['acf_field_name'] ) ? $args['acf_field_name'] : ''; // ACF Field Name.
@@ -181,37 +180,26 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		 * @since 1.0
 		 */
 		public function alm_acf_query() {
-			$form_data      = filter_input_array( INPUT_GET );
-			$data           = isset( $form_data['acf'] ) ? $form_data['acf'] : ''; // Get $acf object array.
-			$repeater       = isset( $form_data['repeater'] ) ? $form_data['repeater'] : 'default';
+			$params = filter_input_array( INPUT_GET );
+
+			$data           = isset( $params['acf'] ) ? $params['acf'] : ''; // Get $acf object array.
+			$repeater       = isset( $params['repeater'] ) ? $params['repeater'] : 'default';
 			$type           = alm_get_repeater_type( $repeater );
-			$theme_repeater = isset( $form_data['theme_repeater'] ) ? $form_data['theme_repeater'] : 'null';
-			$posts_per_page = isset( $form_data['posts_per_page'] ) ? $form_data['posts_per_page'] : 5;
-			$page           = isset( $form_data['page'] ) ? $form_data['page'] : 1;
-			$offset         = isset( $form_data['offset'] ) ? $form_data['offset'] : 0;
-			$canonical_url  = isset( $form_data['canonical_url'] ) ? $form_data['canonical_url'] : $_SERVER['HTTP_REFERER'];
-			$query_type     = isset( $form_data['query_type'] ) ? $form_data['query_type'] : 'standard'; // 'standard' or 'totalposts'. // phpcs:ignore
+			$theme_repeater = isset( $params['theme_repeater'] ) ? $params['theme_repeater'] : 'null';
+			$posts_per_page = isset( $params['posts_per_page'] ) ? $params['posts_per_page'] : 5;
+			$page           = isset( $params['page'] ) ? $params['page'] : 1;
+			$offset         = isset( $params['offset'] ) ? $params['offset'] : 0;
+			$query_type     = isset( $params['query_type'] ) ? $params['query_type'] : 'standard'; // 'standard' or 'totalposts'. // phpcs:ignore
 
-			// Cache Add-on.
-			$cache_id        = isset( $form_data['cache_id'] ) ? $form_data['cache_id'] : '';
-			$cache_slug      = isset( $form_data['cache_slug'] ) && $form_data['cache_slug'] ? $form_data['cache_slug'] : '';
-			$cache_logged_in = isset( $form_data['cache_logged_in'] ) ? $form_data['cache_logged_in'] : false;
-			$do_create_cache = $cache_logged_in === 'true' && is_user_logged_in() ? false : true;
-
-			// Preload Add-on.
-			$preloaded        = isset( $form_data['preloaded'] ) ? $form_data['preloaded'] : false;
-			$preloaded_amount = isset( $form_data['preloaded_amount'] ) ? (int) $form_data['preloaded_amount'] : 5;
+			// Preloaded Add-on.
+			$preloaded        = isset( $params['preloaded'] ) ? $params['preloaded'] : false;
+			$preloaded_amount = isset( $params['preloaded_amount'] ) ? (int) $params['preloaded_amount'] : 5;
 			if ( has_action( 'alm_preload_installed' ) && $preloaded === 'true' ) {
-				// Preloaded: Offset by posts_per_page + preload_amount.
-				$offset = $offset + $preloaded_amount;
+				$offset = $offset + $preloaded_amount; // Preloaded: Offset by posts_per_page + preload_amount.
 			}
-
-			// SEO Add-on.
-			$seo_start_page = isset( $form_data['seo_start_page'] ) ? $form_data['seo_start_page'] : 1;
 
 			// Default variables.
 			$postcount       = 0;
-			$totalposts      = 0;
 			$no_results_data = [
 				'html' => '',
 				'meta' => [
@@ -261,11 +249,10 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 							$images = alm_acf_loop_gallery_rows( 'query', $parent_field_name, $field_name, $post_id, $row_index ); // Get Images.
 
 							if ( $images ) {
-								$total    = count( $images );
-								$per_page = ( $posts_per_page * $page ) + 1;
-								$start    = ( $posts_per_page * $page ) + $offset;
-								$end      = $start + $posts_per_page;
-								$count    = 0;
+								$total = count( $images );
+								$start = ( $posts_per_page * $page ) + $offset;
+								$end   = $start + $posts_per_page;
+								$count = 0;
 
 								ob_start();
 								foreach ( $images as $image ) :
@@ -302,6 +289,7 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 					}
 
 					if ( $query_type === 'totalposts' ) {
+						// Combined Preloaded & Paging add-ons.
 						wp_send_json(
 							[
 								'totalposts' => $total,
@@ -318,13 +306,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 							],
 						];
 
-						/**
-						 * Cache Add-on.
-						 * Create the cache file.
-						 */
-						if ( $cache_id && method_exists( 'ALMCache', 'create_cache_file' ) && $do_create_cache ) {
-							ALMCache::create_cache_file( $cache_id, $cache_slug, $canonical_url, $acf_data, $postcount, $total );
-						}
 					} else {
 						$return = $no_results_data;
 					}
@@ -389,6 +370,6 @@ if ( ! class_exists( 'ALM_ACF' ) ) :
 		}
 		return $alm_acf;
 	}
-		alm_acf();
+	alm_acf();
 
 endif;
